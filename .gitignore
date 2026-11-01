@@ -50,6 +50,6 @@ app.*.map.json
 
 # *.g.dart  # committed for reproducibility
 # *.freezed.dart  # committed for reproducibility
-*.graphql.dart
+# *.graphql.dart  # committed for reproducibility
 # **/__generated__  # committed for reproducibility
 lib/src/l10n/generated
