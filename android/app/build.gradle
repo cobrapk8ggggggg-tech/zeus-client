@@ -66,7 +66,8 @@ android {
    }
    buildTypes {
        release {
-           signingConfig signingConfigs.release
+           // CI proof builds: sign with debug key when no release keystore is provided
+           signingConfig keystoreProperties['storeFile'] ? signingConfigs.release : signingConfigs.debug
        }
    }
 }
