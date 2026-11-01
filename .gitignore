@@ -48,8 +48,8 @@ app.*.map.json
 /android/app/release
 
 
-*.g.dart
-*.freezed.dart
+# *.g.dart  # committed for reproducibility
+# *.freezed.dart  # committed for reproducibility
 *.graphql.dart
-**/__generated__
+# **/__generated__  # committed for reproducibility
 lib/src/l10n/generated

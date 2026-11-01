@@ -60,7 +60,7 @@ extension AsyncValueExtensions<T> on AsyncValue<T> {
                 : null,
           )),
       loading: () =>
-          AppUtils.wrapOn(wrapper, const CenterSorayomiShimmerIndicator()),
+          AppUtils.wrapOn(wrapper, const CenterZeusShimmerIndicator()),
     );
   }
 

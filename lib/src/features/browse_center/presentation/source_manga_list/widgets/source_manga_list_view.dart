@@ -36,7 +36,7 @@ class SourceMangaListView extends ConsumerWidget {
       pagingController: controller,
       builderDelegate: PagedChildBuilderDelegate<MangaDto>(
         firstPageProgressIndicatorBuilder: (context) =>
-            const CenterSorayomiShimmerIndicator(),
+            const CenterZeusShimmerIndicator(),
         newPageProgressIndicatorBuilder: (context) => Row(
           children: [
             SizedBox(
@@ -44,7 +44,7 @@ class SourceMangaListView extends ConsumerWidget {
               width: 80,
               child: ClipRRect(
                 borderRadius: KBorderRadius.r8.radius,
-                child: const SorayomiShimmerIndicator(),
+                child: const ZeusShimmerIndicator(),
               ),
             ),
             Padding(

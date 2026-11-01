@@ -114,7 +114,7 @@ class UpdatesScreen extends HookConsumerWidget {
           pagingController: controller,
           builderDelegate: PagedChildBuilderDelegate<ChapterWithMangaDto>(
             firstPageProgressIndicatorBuilder: (context) =>
-                const CenterSorayomiShimmerIndicator(),
+                const CenterZeusShimmerIndicator(),
             firstPageErrorIndicatorBuilder: (context) => Emoticons(
               title: controller.error.toString(),
               button: TextButton(

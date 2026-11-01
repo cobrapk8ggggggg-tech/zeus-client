@@ -31,7 +31,7 @@ Future<void> main() async {
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
         hiveStoreProvider.overrideWithValue(HiveStore())
       ],
-      child: const Sorayomi(),
+      child: const ZeusManhwaApp(),
     ),
   );
 }

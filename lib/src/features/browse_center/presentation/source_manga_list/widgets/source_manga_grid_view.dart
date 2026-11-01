@@ -40,9 +40,9 @@ class SourceMangaGridView extends ConsumerWidget {
       pagingController: controller,
       builderDelegate: PagedChildBuilderDelegate<MangaDto>(
         firstPageProgressIndicatorBuilder: (context) =>
-            const CenterSorayomiShimmerIndicator(),
+            const CenterZeusShimmerIndicator(),
         newPageProgressIndicatorBuilder: (context) =>
-            const CenterSorayomiShimmerIndicator(),
+            const CenterZeusShimmerIndicator(),
         firstPageErrorIndicatorBuilder: (context) => Emoticons(
           title: controller.error.toString(),
           button: TextButton(

@@ -76,7 +76,7 @@ class ServerImage extends HookConsumerWidget {
         AppUtils.wrapOn(
           wrapper,
           progressIndicatorBuilder?.call(context, url, progress) ??
-              const CenterSorayomiShimmerIndicator(),
+              const CenterZeusShimmerIndicator(),
         );
 
     Widget errorWidget(BuildContext context, String error, stackTrace) {
@@ -160,7 +160,7 @@ class ServerImageWithCpi extends StatelessWidget {
               imageUrl: url,
               size: innerSize,
               progressIndicatorBuilder: (context, url, progress) =>
-                  const CenterSorayomiShimmerIndicator(),
+                  const CenterZeusShimmerIndicator(),
             )
           ],
         ),

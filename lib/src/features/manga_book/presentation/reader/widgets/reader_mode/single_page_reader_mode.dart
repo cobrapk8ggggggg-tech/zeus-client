@@ -121,14 +121,14 @@ class SinglePageReaderMode extends HookConsumerWidget {
           // Show loading indicator if no pages are available yet
           if (chapterPages.pages.isEmpty) {
             return const Center(
-              child: CenterSorayomiShimmerIndicator(),
+              child: CenterZeusShimmerIndicator(),
             );
           }
 
           // Add bounds checking to prevent accessing non-existent pages
           if (index >= chapterPages.pages.length) {
             return const Center(
-              child: CenterSorayomiShimmerIndicator(),
+              child: CenterZeusShimmerIndicator(),
             );
           }
 
@@ -139,7 +139,7 @@ class SinglePageReaderMode extends HookConsumerWidget {
             appendApiToUrl: false,
             imageUrl: chapterPages.pages[index],
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CenterSorayomiShimmerIndicator(
+                CenterZeusShimmerIndicator(
               value: downloadProgress.progress,
             ),
           );

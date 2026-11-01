@@ -18,8 +18,8 @@ import 'l10n/generated/app_localizations.dart';
 import 'routes/router_config.dart';
 import 'utils/extensions/custom_extensions.dart';
 
-class Sorayomi extends ConsumerWidget {
-  const Sorayomi({super.key});
+class ZeusManhwaApp extends ConsumerWidget {
+  const ZeusManhwaApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
