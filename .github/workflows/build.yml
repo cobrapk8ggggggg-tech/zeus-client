@@ -58,7 +58,8 @@ jobs:
         run: |
           APP=build/ios/iphoneos/Runner.app
           ls -la "$APP"
-          cd build/ios/iphoneos && zip -qry ../../../../zeus-ios-unsigned.app.zip Runner.app
+          cd build/ios/iphoneos && zip -qry "$GITHUB_WORKSPACE/zeus-ios-unsigned.app.zip" Runner.app
+          ls -la "$GITHUB_WORKSPACE/zeus-ios-unsigned.app.zip"
       - uses: actions/upload-artifact@v4
         with:
           name: zeus-ios-unsigned
