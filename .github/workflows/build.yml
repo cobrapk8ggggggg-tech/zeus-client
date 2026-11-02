@@ -107,3 +107,36 @@ jobs:
         with:
           name: zeus-ios-embedded
           path: zeus-ios-embedded.app.zip
+
+  # Zeus LITE — small client (~30MB) with NO embedded JVM/server.
+  # For devices with tight storage: install this, run the Suwayomi server
+  # on a PC/VPS (one command), point the app at it via Settings → Server URL.
+  ios-lite:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.8"
+          channel: stable
+          cache: true
+      - name: Configure lite variant (no embedded JVM)
+        run: echo "ZEUS_LITE=1" >> "$GITHUB_ENV"
+      - run: flutter pub get
+      - run: dart analyze
+      - run: flutter build ios --release --no-codesign
+      - name: Verify lite bundle (must NOT contain the JVM/server)
+        run: |
+          APP=build/ios/iphoneos/Runner.app
+          if [ -d "$APP/Frameworks/jvm.framework" ]; then echo '::error::lite build must not contain jvm.framework'; exit 1; fi
+          if [ -n "$(find "$APP" -name 'zeus-server.jar')" ]; then echo '::error::lite build must not contain zeus-server.jar'; exit 1; fi
+          echo "✅ lite bundle clean — no JVM, no server jar"
+          du -sh "$APP"
+      - name: Package unsigned .app (lite)
+        run: |
+          cd build/ios/iphoneos && zip -qry9 "$GITHUB_WORKSPACE/zeus-ios-lite.app.zip" Runner.app
+          ls -la "$GITHUB_WORKSPACE/zeus-ios-lite.app.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zeus-ios-lite
+          path: zeus-ios-lite.app.zip

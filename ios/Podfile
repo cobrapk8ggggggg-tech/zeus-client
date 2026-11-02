@@ -34,7 +34,9 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
   # Embedded JVM + Suwayomi-Server (Tachimanga architecture)
-  pod 'OpenJ9Embed', :path => File.expand_path('OpenJ9Embed', __dir__)
+  # ZEUS_LITE=1 builds skip the embedded JVM entirely — a small (~30MB) client
+  # that connects to a remote Suwayomi server (PC / VPS) instead.
+  pod 'OpenJ9Embed', :path => File.expand_path('OpenJ9Embed', __dir__) unless ENV['ZEUS_LITE'] == '1'
 end
 
 post_install do |installer|
