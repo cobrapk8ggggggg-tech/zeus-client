@@ -27,11 +27,13 @@ Pod::Spec.new do |s|
   s.platform         = :ios, '15.0'
   s.swift_version    = '5.9'
 
-  # Zeus bootstrap + vendored copy of OpenJ9Kit sources
-  s.source_files     = 'Sources/*.{h,m}', 'OpenJ9/Sources/OpenJ9Kit/OpenJ9Kit.m'
+  # Zeus bootstrap (self-contained; VM loaded via dlopen at runtime)
+  s.source_files     = 'Sources/*.{h,m}'
   s.public_header_files = 'Sources/ZeusJVMLauncher.h'
 
-  # All runtime XCFrameworks (jvm, j9*, freetype, mlib_image, ...)
+  # All runtime XCFrameworks (jvm, j9*, freetype, mlib_image, ...) — embedded
+  # into the app bundle; loaded with dlopen, NOT linked (CocoaPods cannot link
+  # vendored xcframeworks from pod targets reliably).
   s.vendored_frameworks = 'OpenJ9/Artifacts/XCFrameworks/*.xcframework'
 
   # Suwayomi-Server fat jar → lands at the app bundle root
