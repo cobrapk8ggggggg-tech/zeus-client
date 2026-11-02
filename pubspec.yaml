@@ -80,7 +80,7 @@ flutter:
   generate: true
   assets:
     - assets/icons/
-    - assets/icons/launcher/
+    - assets/branding/
 
 flutter_gen:
   output: lib/src/constants/gen/

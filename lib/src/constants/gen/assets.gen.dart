@@ -9,6 +9,21 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsBrandingGen {
+  const $AssetsBrandingGen();
+
+  /// File path: assets/branding/app_icon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/branding/app_icon.png');
+
+  /// File path: assets/branding/zeus-logo.png
+  AssetGenImage get zeusLogo =>
+      const AssetGenImage('assets/branding/zeus-logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [appIcon, zeusLogo];
+}
+
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -31,6 +46,7 @@ class $AssetsIconsGen {
 class Assets {
   const Assets._();
 
+  static const $AssetsBrandingGen branding = $AssetsBrandingGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
 }
 
