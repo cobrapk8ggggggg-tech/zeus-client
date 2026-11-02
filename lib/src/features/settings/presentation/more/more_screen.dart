@@ -65,7 +65,7 @@ class MoreScreen extends ConsumerWidget {
             leading: const Icon(Icons.help_rounded),
             onTap: () => launchUrlInWeb(
               context,
-              AppUrls.tachideskHelp.url,
+              AppUrls.suwayomiServerHelp.url,
               ref.read(toastProvider),
             ),
           ),

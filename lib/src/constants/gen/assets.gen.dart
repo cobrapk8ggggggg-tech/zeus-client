@@ -16,9 +16,6 @@ class $AssetsIconsGen {
   AssetGenImage get darkIcon =>
       const AssetGenImage('assets/icons/dark_icon.png');
 
-  /// Directory path: assets/icons/launcher
-  $AssetsIconsLauncherGen get launcher => const $AssetsIconsLauncherGen();
-
   /// File path: assets/icons/light_icon.png
   AssetGenImage get lightIcon =>
       const AssetGenImage('assets/icons/light_icon.png');
@@ -29,38 +26,6 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [darkIcon, lightIcon, previousDone];
-}
-
-class $AssetsIconsLauncherGen {
-  const $AssetsIconsLauncherGen();
-
-  /// File path: assets/icons/launcher/from_suwayomi.png
-  AssetGenImage get fromSuwayomi =>
-      const AssetGenImage('assets/icons/launcher/from_suwayomi.png');
-
-  /// File path: assets/icons/launcher/ios_sorayomi_icon.png
-  AssetGenImage get iosSorayomiIcon =>
-      const AssetGenImage('assets/icons/launcher/ios_sorayomi_icon.png');
-
-  /// File path: assets/icons/launcher/sorayomi_icon.ico
-  String get sorayomiIconIco => 'assets/icons/launcher/sorayomi_icon.ico';
-
-  /// File path: assets/icons/launcher/sorayomi_icon.png
-  AssetGenImage get sorayomiIconPng =>
-      const AssetGenImage('assets/icons/launcher/sorayomi_icon.png');
-
-  /// File path: assets/icons/launcher/sorayomi_preview_icon.png
-  AssetGenImage get sorayomiPreviewIcon =>
-      const AssetGenImage('assets/icons/launcher/sorayomi_preview_icon.png');
-
-  /// List of all assets
-  List<dynamic> get values => [
-    fromSuwayomi,
-    iosSorayomiIcon,
-    sorayomiIconIco,
-    sorayomiIconPng,
-    sorayomiPreviewIcon,
-  ];
 }
 
 class Assets {

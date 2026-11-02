@@ -149,7 +149,7 @@ class AboutScreen extends HookConsumerWidget {
             ListTile(
               title: Text(context.l10n.whatsNew),
               onTap: () async {
-                final url = AppUrls.sorayomiWhatsNew.url + packageInfo.version;
+                final url = AppUrls.zeusWhatsNew.url + packageInfo.version;
                 await launchUrlInWeb(context, url, toast);
               },
             ),
@@ -202,7 +202,7 @@ class AboutScreen extends HookConsumerWidget {
                   MediaLaunchButton(
                     title: "${context.l10n.gitHub} ",
                     iconData: FontAwesomeIcons.github,
-                    url: AppUrls.sorayomiGithubUrl.url,
+                    url: AppUrls.suwayomiGithubUrl.url,
                     toast: toast,
                   ),
                   if ((about?.discord).isNotBlank)

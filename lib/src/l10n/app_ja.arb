@@ -1115,9 +1115,9 @@
   "@withUnreadChapter": {
     "description": "Setting option Text for Skip updating entries to toggle With unread chapter(s)"
   },
-  "appTitle": "Sorayomi",
+  "appTitle": "Zeus Manhwa",
   "@appTitle": {
-    "description": "Name of the app (Sorayomi in native script)"
+    "description": "Name of the app (Zeus Manhwa)"
   },
   "ip": "IPアドレス",
   "@ip": {

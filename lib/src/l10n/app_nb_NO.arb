@@ -67,9 +67,9 @@
   "@appTheme": {
     "description": "Popup title and Button text to change App Theme Mode"
   },
-  "appTitle": "Sorayomi",
+  "appTitle": "Zeus Manhwa",
   "@appTitle": {
-    "description": "Name of the app (Sorayomi in native script)"
+    "description": "Name of the app (Zeus Manhwa)"
   },
   "appearance": "Utseende",
   "@appearance": {
@@ -176,7 +176,7 @@
     "description": "Toast text to show that the message has been copied",
     "placeholders": {
       "msg": {
-        "example": "Client : Sorayomi",
+        "example": "Client : Zeus Manhwa",
         "type": "String"
       }
     }

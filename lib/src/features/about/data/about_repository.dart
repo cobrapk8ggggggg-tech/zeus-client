@@ -40,7 +40,7 @@ class AboutRepository {
   Future<AsyncValue<Version?>> checkUpdate() async {
     final gitResponse = await AsyncValue.guard<Map<String, dynamic>?>(
         () async => json.decode((await http.get(
-              Uri.parse(AppUrls.sorayomiLatestReleaseApiUrl.url),
+              Uri.parse(AppUrls.zeusLatestReleaseApiUrl.url),
             ))
                 .body));
     return gitResponse.copyWithData<Version?>(

@@ -361,9 +361,9 @@
   "@authType": {
     "description": "Popup title and Button text to change App Authentication"
   },
-  "appTitle": "Sorayomi",
+  "appTitle": "Zeus Manhwa",
   "@appTitle": {
-    "description": "Name of the app (Sorayomi in native script)"
+    "description": "Name of the app (Zeus Manhwa)"
   },
   "credentials": "認證",
   "@credentials": {
@@ -454,7 +454,7 @@
     "description": "Toast text to show that the message has been copied",
     "placeholders": {
       "msg": {
-        "example": "Client : Sorayomi",
+        "example": "Client : Zeus Manhwa",
         "type": "String"
       }
     }

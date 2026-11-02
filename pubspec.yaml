@@ -86,33 +86,33 @@ flutter_gen:
   output: lib/src/constants/gen/
 
 flutter_native_splash:
-  color: "#54C5F8"
-  image: assets/icons/dark_icon.png
-  branding: assets/icons/launcher/from_suwayomi.png
-  color_dark: "#01579B"
-  image_dark: assets/icons/light_icon.png
+  color: "#121212"
+  color_dark: "#000000"
+  image: assets/branding/zeus-logo.png
+  image_dark: assets/branding/zeus-logo.png
   android_12:
-    color: "#54C5F8"
-    color_dark: "#01579B"
-    icon_background_color: "#54C5F8"
-    icon_background_color_dark: "#01579B"
-    image: assets/icons/dark_icon.png
-    image_dark: assets/icons/light_icon.png
+    color: "#121212"
+    color_dark: "#000000"
+    icon_background_color: "#121212"
+    icon_background_color_dark: "#000000"
+    image: assets/branding/zeus-logo.png
+    image_dark: assets/branding/zeus-logo.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/icons/launcher/sorayomi_icon.png"
-  image_path_ios: "assets/icons/launcher/ios_sorayomi_icon.png"
+  image_path: "assets/branding/app_icon.png"
+  adaptive_icon_background: "#121212"
+  adaptive_icon_foreground: "assets/branding/app_icon.png"
   web:
     generate: true
-    image_path: "assets/icons/launcher/sorayomi_icon.png"
-    background_color: "#54C5F8"
-    theme_color: "#54C5F8"
+    image_path: "assets/branding/app_icon.png"
+    background_color: "#121212"
+    theme_color: "#121212"
   windows:
     generate: true
-    image_path: "assets/icons/launcher/sorayomi_icon.png"
+    image_path: "assets/branding/app_icon.png"
   macos:
     generate: true
-    image_path: "assets/icons/launcher/sorayomi_icon.png"
+    image_path: "assets/branding/app_icon.png"

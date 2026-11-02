@@ -1,11 +1,11 @@
 {
-    "name": "tachidesk_sorayomi",
-    "short_name": "tachidesk_sorayomi",
+    "name": "Zeus Manhwa",
+    "short_name": "Zeus Manhwa",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#54C5F8",
-    "theme_color": "#54C5F8",
-    "description": "A new Flutter project.",
+    "background_color": "#121212",
+    "theme_color": "#121212",
+    "description": "Zeus Manhwa - manga reader",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

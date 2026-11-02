@@ -3,9 +3,9 @@
   "@appLanguage": {
     "description": "Popup title and Button text to change App Language"
   },
-  "appTitle": "சோரயோமி",
+  "appTitle": "Zeus Manhwa",
   "@appTitle": {
-    "description": "Name of the app (Sorayomi in native script)"
+    "description": "Name of the app (Zeus Manhwa)"
   },
   "appTheme": "பயன்பாட்டு கருப்பொருள் பயன்முறை",
   "@appTheme": {
@@ -158,7 +158,7 @@
     "description": "Toast text to show that the message has been copied",
     "placeholders": {
       "msg": {
-        "example": "Client : Sorayomi",
+        "example": "Client : Zeus Manhwa",
         "type": "String"
       }
     }

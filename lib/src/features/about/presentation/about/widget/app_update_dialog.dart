@@ -33,7 +33,7 @@ void appUpdateDialog({
             ElevatedButton.icon(
               onPressed: () {
                 launchUrlInWeb(context,
-                    url ?? AppUrls.sorayomiLatestReleaseUrl.url, toast);
+                    url ?? AppUrls.zeusLatestReleaseUrl.url, toast);
                 Navigator.pop(context);
               },
               icon: const Icon(FontAwesomeIcons.github),

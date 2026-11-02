@@ -5,17 +5,22 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 enum AppUrls {
-  sorayomiGithubUrl(url: "https://github.com/Suwayomi/Tachidesk-Sorayomi"),
-  sorayomiLatestReleaseUrl(
-      url: "https://github.com/Suwayomi/Tachidesk-Sorayomi/releases/latest"),
-  tachideskHelp(url: "https://github.com/Suwayomi/suwayomi-Server/wiki"),
-  tachideskReddit(url: "https://www.reddit.com/r/Tachidesk"),
-  sorayomiWhatsNew(
-      url: "https://github.com/Suwayomi/Tachidesk-Sorayomi/releases/tag/"),
-  sorayomiLatestReleaseApiUrl(
+  // Zeus Manhwa (this fork) — update checks target our releases; on a private
+  // repo the API 404s and the guarded update check silently finds nothing.
+  zeusGithubUrl(url: "https://github.com/cobrapk8ggggggg-tech/zeus-client"),
+  zeusLatestReleaseUrl(
+      url: "https://github.com/cobrapk8ggggggg-tech/zeus-client/releases/latest"),
+  zeusWhatsNew(
+      url: "https://github.com/cobrapk8ggggggg-tech/zeus-client/releases/tag/"),
+  zeusLatestReleaseApiUrl(
     url:
-        "https://api.github.com/repos/Suwayomi/Tachidesk-Sorayomi/releases/latest",
+        "https://api.github.com/repos/cobrapk8ggggggg-tech/zeus-client/releases/latest",
   ),
+
+  // Upstream credits (MPL-2.0 provenance)
+  suwayomiGithubUrl(url: "https://github.com/Suwayomi/Tachidesk-Sorayomi"),
+  suwayomiServerHelp(url: "https://github.com/Suwayomi/suwayomi-Server/wiki"),
+  tachideskReddit(url: "https://www.reddit.com/r/Tachidesk"),
   flareSolverr(
       url:
           "https://github.com/FlareSolverr/FlareSolverr?tab=readme-ov-file#installation");
