@@ -52,15 +52,45 @@ jobs:
           flutter-version: "3.32.8"
           channel: stable
           cache: true
+
+      # --- Embedded JVM deps (Tachimanga architecture) ---
+      # OpenJ9-iOS SDK (interpreter-mode Java 21, headless variant) + Suwayomi-Server jar
+      # are mirrored in this repo's `embedded-deps` release so GITHUB_TOKEN suffices.
+      - name: Fetch embedded JVM deps
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p ios/OpenJ9Embed/OpenJ9 ios/OpenJ9Embed/Resources
+          gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
+            --pattern 'OpenJ9-iOS-headless.zip' --output /tmp/oj9.zip
+          unzip -q /tmp/oj9.zip -d /tmp/oj9
+          mv /tmp/oj9/OpenJ9 ios/OpenJ9Embed/OpenJ9
+          gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
+            --pattern 'Suwayomi-Server-v2.4.2366.jar' --output ios/OpenJ9Embed/Resources/zeus-server.jar
+          echo "SDK frameworks: $(ls ios/OpenJ9Embed/OpenJ9/Artifacts/XCFrameworks | wc -l | tr -d ' ')"
+          echo "jar: $(du -h ios/OpenJ9Embed/Resources/zeus-server.jar | cut -f1)"
+
       - run: flutter pub get
+      - run: dart analyze
       - run: flutter build ios --release --no-codesign
+
+      - name: Verify embedded server in bundle
+        run: |
+          APP=build/ios/iphoneos/Runner.app
+          test -d "$APP/Frameworks/jvm.framework" || { echo '::error::jvm.framework missing'; exit 1; }
+          test -f "$APP/Frameworks/jvm.framework/javahome/lib/modules" || { echo '::error::javahome missing'; exit 1; }
+          test -f "$APP/zeus-server.jar" || { echo '::error::zeus-server.jar missing'; exit 1; }
+          test -f "$APP/Frameworks/jvm.framework/jvm" || { echo '::error::jvm binary missing'; exit 1; }
+          echo "✅ embedded JVM + server present"
+          du -sh "$APP"
+
       - name: Package unsigned .app
         run: |
           APP=build/ios/iphoneos/Runner.app
           ls -la "$APP"
-          cd build/ios/iphoneos && zip -qry "$GITHUB_WORKSPACE/zeus-ios-unsigned.app.zip" Runner.app
-          ls -la "$GITHUB_WORKSPACE/zeus-ios-unsigned.app.zip"
+          cd build/ios/iphoneos && zip -qry "$GITHUB_WORKSPACE/zeus-ios-embedded.app.zip" Runner.app
+          ls -la "$GITHUB_WORKSPACE/zeus-ios-embedded.app.zip"
       - uses: actions/upload-artifact@v4
         with:
-          name: zeus-ios-unsigned
-          path: zeus-ios-unsigned.app.zip
+          name: zeus-ios-embedded
+          path: zeus-ios-embedded.app.zip

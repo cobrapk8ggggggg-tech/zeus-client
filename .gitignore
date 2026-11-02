@@ -53,3 +53,7 @@ app.*.map.json
 # *.graphql.dart  # committed for reproducibility
 # **/__generated__  # committed for reproducibility
 lib/src/l10n/generated
+
+# Embedded JVM deps — CI downloads from the `embedded-deps` release
+ios/OpenJ9Embed/OpenJ9/
+ios/OpenJ9Embed/Resources/*.jar
