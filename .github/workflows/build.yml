@@ -53,21 +53,24 @@ jobs:
           channel: stable
           cache: true
 
-      # --- Embedded JVM deps (Tachimanga architecture) ---
-      # OpenJ9-iOS SDK (interpreter-mode Java 21, headless variant) + Suwayomi-Server jar
-      # are mirrored in this repo's `embedded-deps` release so GITHUB_TOKEN suffices.
-      - name: Fetch embedded JVM deps
+      # --- Embedded JVM deps (Tachimanga architecture) — SLIM variant ---
+      # Suwayomi-Server-zeus-slim.jar (~87MB)  = full jar minus GraalJS/Truffle,
+      #   ICU4J, fonts, WebUI, postgres driver, Android res  (tools/make-embedded-deps.sh)
+      # OpenJ9-iOS-headless-device.zip (~48MB) = same SDK minus ios-arm64-simulator slices
+      # Both mirrored in the `embedded-deps` release so GITHUB_TOKEN suffices.
+      # Full variants remain in the release for sources needing JS (JsEval) / ICU.
+      - name: Fetch embedded JVM deps (slim)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p ios/OpenJ9Embed/Resources
           gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
-            --pattern 'OpenJ9-iOS-headless.zip' --output /tmp/oj9.zip
+            --pattern 'OpenJ9-iOS-headless-device.zip' --output /tmp/oj9.zip
           unzip -q /tmp/oj9.zip -d /tmp/oj9
           rm -rf ios/OpenJ9Embed/OpenJ9
           mv /tmp/oj9/OpenJ9 ios/OpenJ9Embed/OpenJ9
           gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
-            --pattern 'Suwayomi-Server-v2.4.2366.jar' --output ios/OpenJ9Embed/Resources/zeus-server.jar
+            --pattern 'Suwayomi-Server-*-zeus-slim.jar' --output ios/OpenJ9Embed/Resources/zeus-server.jar
           echo "SDK frameworks: $(ls ios/OpenJ9Embed/OpenJ9/Artifacts/XCFrameworks | wc -l | tr -d ' ')"
           echo "jar: $(du -h ios/OpenJ9Embed/Resources/zeus-server.jar | cut -f1)"
 
@@ -86,11 +89,19 @@ jobs:
           echo "✅ embedded JVM + server present (jar at: $JAR)"
           du -sh "$APP"
 
+      - name: Size report (embedded payload breakdown)
+        run: |
+          APP=build/ios/iphoneos/Runner.app
+          echo "### Zeus iOS — size breakdown"
+          du -sh "$APP/Frameworks/jvm.framework/javahome" 2>/dev/null || true
+          du -h $(find "$APP" -name 'zeus-server.jar') 2>/dev/null || true
+          du -sh "$APP"
+
       - name: Package unsigned .app
         run: |
           APP=build/ios/iphoneos/Runner.app
           ls -la "$APP"
-          cd build/ios/iphoneos && zip -qry "$GITHUB_WORKSPACE/zeus-ios-embedded.app.zip" Runner.app
+          cd build/ios/iphoneos && zip -qry9 "$GITHUB_WORKSPACE/zeus-ios-embedded.app.zip" Runner.app
           ls -la "$GITHUB_WORKSPACE/zeus-ios-embedded.app.zip"
       - uses: actions/upload-artifact@v4
         with:
