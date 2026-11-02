@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     compileSdkVersion 34 // flutter.compileSdkVersion
     ndkVersion "27.0.12077973"
-    namespace "com.suwayomi.zeus_client"
+    namespace "com.zeusmanhwa.app"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17

@@ -168,7 +168,7 @@
     "description": "Error Description to show when App failed to launch an URL and copied the URL to clipboard",
     "placeholders": {
       "url": {
-        "example": "http://sorayomi.suwayomi.org",
+        "example": "https://zeusmanhwa.app",
         "type": "String"
       }
     }

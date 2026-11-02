@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/features/about/presentation/about/controllers/about_controller.dart';
 import 'src/global_providers/global_providers.dart';
-import 'src/sorayomi.dart';
+import 'src/zeus_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,4 +1,4 @@
-package com.suwayomi.tachidesk_sorayomi
+package com.zeusmanhwa.app
 
 import io.flutter.embedding.android.FlutterActivity
 

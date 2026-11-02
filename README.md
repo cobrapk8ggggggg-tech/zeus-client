@@ -26,6 +26,10 @@
 dependency_overrides:
   analyzer: 7.3.0
   custom_lint_visitor: 1.0.0+7.3.0
+  # http 1.3.0 BrowserClient (fetch-based) يكسر graphql_flutter 5.2.0-beta.8 على الويب:
+  # الطلبات المتوازية على نفس العميل تُجهض بـ "TypeError: network error".
+  # 1.2.2 (XHR) هو الإصدار المجرَّب لمنصة الويب (الأندرويد/iOS غير متأثرين).
+  http: 1.2.2
 ```
 - Flutter 3.47.x **يكسر** البناء: `flex_color_scheme 8.2.0` (AppBarThemeData split) + `font_awesome_flutter` (IconData final) + `file_picker` FFI على الويب. لذلك 3.32.8.
 - الملفات المولّدة ملتزمة عمداً: أي انحراف في pub resolution لن يكسر البناء.
