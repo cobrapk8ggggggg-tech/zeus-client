@@ -23,7 +23,12 @@ abstract class Endpoints {
     }
     Uri url = Uri.tryParse(primary) ?? Uri.parse(DBKeys.serverUrl.initial);
 
-    if (port != null && addPort) {
+    // Only auto-append the configured port for plain http URLs that carry no
+    // explicit port (classic LAN setup: http://192.168.x.x -> :4567).
+    // https URLs (proxied hosts, e.g. https://4567-xyz.example.com serving on
+    // 443) and URLs with an explicit port are respected as-is — forcing :4567
+    // onto them breaks the connection (TimeoutException).
+    if (port != null && addPort && !url.hasPort && url.scheme != 'https') {
       url = url.replace(port: port);
     }
     if (appendApiToUrl) {
