@@ -60,10 +60,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p ios/OpenJ9Embed/OpenJ9 ios/OpenJ9Embed/Resources
+          mkdir -p ios/OpenJ9Embed/Resources
           gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
             --pattern 'OpenJ9-iOS-headless.zip' --output /tmp/oj9.zip
           unzip -q /tmp/oj9.zip -d /tmp/oj9
+          rm -rf ios/OpenJ9Embed/OpenJ9
           mv /tmp/oj9/OpenJ9 ios/OpenJ9Embed/OpenJ9
           gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
             --pattern 'Suwayomi-Server-v2.4.2366.jar' --output ios/OpenJ9Embed/Resources/zeus-server.jar
