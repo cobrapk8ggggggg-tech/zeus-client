@@ -36,7 +36,7 @@
     "description": "Toast text to show that the message has been copied",
     "placeholders": {
       "msg": {
-        "example": "Client : Tachidesk Sorayomi",
+        "example": "Client : Zeus Manhwa",
         "type": "String"
       }
     }
