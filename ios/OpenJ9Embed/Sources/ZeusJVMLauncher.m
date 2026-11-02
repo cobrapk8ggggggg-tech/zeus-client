@@ -168,8 +168,21 @@ static void *ZeusJavaThreadMain(void *arg) {
 @implementation ZeusJVMLauncherPrivate
 
 + (void)bootServer {
-    // ---- locate zeus-server.jar ----
+    // ---- locate zeus-server.jar (root or any nested resources dir) ----
     NSString *jar = [NSBundle.mainBundle pathForResource:@"zeus-server" ofType:@"jar"];
+    if (jar.length == 0) {
+        NSString *root = [NSBundle.mainBundle bundlePath];
+        __block NSString *found = nil;
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSDirectoryEnumerator *e = [fm enumeratorAtURL:[NSURL fileURLWithPath:root]
+                            includingPropertiesForKeys:@[ NSURLIsRegularFileKey ]
+                                               options:0
+                                          errorHandler:nil];
+        for (NSURL *f in e) {
+            if ([f.lastPathComponent isEqualToString:@"zeus-server.jar"]) { found = f.path; break; }
+        }
+        jar = found ?: @"";
+    }
     if (jar.length == 0) {
         os_log_error(_zeusLog, "zeus-server.jar NOT FOUND in bundle — embedded server disabled");
         return;

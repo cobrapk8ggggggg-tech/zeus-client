@@ -80,9 +80,10 @@ jobs:
           APP=build/ios/iphoneos/Runner.app
           test -d "$APP/Frameworks/jvm.framework" || { echo '::error::jvm.framework missing'; exit 1; }
           test -f "$APP/Frameworks/jvm.framework/javahome/lib/modules" || { echo '::error::javahome missing'; exit 1; }
-          test -f "$APP/zeus-server.jar" || { echo '::error::zeus-server.jar missing'; exit 1; }
+          JAR=$(find "$APP" -name 'zeus-server.jar' | head -1)
+          test -n "$JAR" || { echo '::error::zeus-server.jar missing'; find "$APP" -name '*.jar' | head; exit 1; }
           test -f "$APP/Frameworks/jvm.framework/jvm" || { echo '::error::jvm binary missing'; exit 1; }
-          echo "✅ embedded JVM + server present"
+          echo "✅ embedded JVM + server present (jar at: $JAR)"
           du -sh "$APP"
 
       - name: Package unsigned .app
