@@ -1,0 +1,59 @@
+name: Verify iOS Simulator Boot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ios-sim-verify:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.8"
+          channel: stable
+          cache: true
+
+      - name: Configure lite variant (client-only; JVM SDK is device-only)
+        run: echo "ZEUS_LITE=1" >> "$GITHUB_ENV"
+
+      - run: flutter pub get
+      - name: Build for iOS Simulator
+        run: flutter build ios --simulator --release
+
+      - name: Boot simulator, install, launch, screenshot
+        run: |
+          APP=build/ios/iphonesimulator/Runner.app
+          test -d "$APP" || { echo '::error::simulator app missing'; exit 1; }
+          BID=$(plutil -extract CFBundleIdentifier raw "$APP/Info.plist")
+          echo "Bundle ID: $BID"
+
+          UDID=$(xcrun simctl list devices available | grep -m1 "iPhone" | grep -Eo "[0-9A-Fa-f-]{36}")
+          test -n "$UDID" || { echo '::error::no iPhone simulator found'; exit 1; }
+          echo "Simulator UDID: $UDID"
+
+          xcrun simctl boot "$UDID" 2>/dev/null || true
+          xcrun simctl bootstatus "$UDID" -b
+
+          xcrun simctl install "$UDID" "$APP"
+          LAUNCH_OUT=$(xcrun simctl launch "$UDID" "$BID")
+          echo "launch: $LAUNCH_OUT"
+
+          sleep 20
+          mkdir -p shots
+          xcrun simctl io "$UDID" screenshot shots/boot-20s.png
+          sleep 10
+          xcrun simctl io "$UDID" screenshot shots/boot-30s.png
+
+          if xcrun simctl spawn "$UDID" launchctl list | grep -qi "zeusmanhwa"; then
+            echo "✅ Zeus client process ALIVE after 30s — simulator boot verified"
+          else
+            echo "::warning::process not in launchctl after 30s — crash logs below"
+            ls ~/Library/Logs/DiagnosticReports 2>/dev/null | head -5 || true
+            exit 1
+          fi
+          ls -la shots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-sim-boot-shots
+          path: shots
