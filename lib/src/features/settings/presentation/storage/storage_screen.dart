@@ -11,8 +11,8 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../../utils/extensions/custom_extensions.dart';
-import '../../../../../utils/misc/toast/toast.dart';
+import '../../../../utils/extensions/custom_extensions.dart';
+import '../../../../utils/misc/toast/toast.dart';
 
 enum _StorageItem { images, temp, graphql }
 
