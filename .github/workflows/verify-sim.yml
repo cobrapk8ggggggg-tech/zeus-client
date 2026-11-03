@@ -19,7 +19,7 @@ jobs:
 
       - run: flutter pub get
       - name: Build for iOS Simulator
-        run: flutter build ios --simulator --release
+        run: flutter build ios --simulator
 
       - name: Boot simulator, install, launch, screenshot
         run: |
