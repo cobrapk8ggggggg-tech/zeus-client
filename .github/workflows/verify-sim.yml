@@ -1,4 +1,4 @@
-name: Verify iOS Simulator Boot
+name: Verify iOS Simulator Boot (external Suwayomi server)
 
 on:
   workflow_dispatch:
@@ -13,24 +13,57 @@ jobs:
           flutter-version: "3.32.8"
           channel: stable
           cache: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
 
       - name: Configure lite variant (client-only; JVM SDK is device-only)
         run: echo "ZEUS_LITE=1" >> "$GITHUB_ENV"
 
       - run: flutter pub get
+      - run: dart analyze
+
+      # ─── Start a REAL external Suwayomi server on the runner ─────────────
+      # The simulator app talks to it at http://127.0.0.1:4567 exactly like
+      # a real device talks to a PC/VPS server. This is the end-to-end test
+      # of the LITE external-server flow.
+      - name: Start real Suwayomi server on runner
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download embedded-deps --repo "$GITHUB_REPOSITORY" \
+            --pattern 'Suwayomi-Server-*-zeus-slim.jar' --output /tmp/suy.jar
+          echo "jar: $(du -h /tmp/suy.jar | cut -f1)"
+          nohup java -jar /tmp/suy.jar > /tmp/suy.log 2>&1 &
+          echo $! > /tmp/suy.pid
+          UP=0
+          for i in $(seq 1 90); do
+            if curl -sf http://127.0.0.1:4567/api/v1/settings/about > /tmp/about.json; then UP=1; break; fi
+            sleep 2
+          done
+          if [ "$UP" != "1" ]; then
+            echo '::error::Suwayomi server did not come up on :4567'
+            tail -60 /tmp/suy.log || true
+            exit 1
+          fi
+          echo "✅ Suwayomi server UP: $(head -c 200 /tmp/about.json)"
+
       - name: Build for iOS Simulator
         run: flutter build ios --simulator
 
-      - name: Boot simulator, install, launch, screenshot
+      - name: Phase A — fresh install → first-run setup wizard
         run: |
           APP=build/ios/iphonesimulator/Runner.app
           test -d "$APP" || { echo '::error::simulator app missing'; exit 1; }
           BID=$(plutil -extract CFBundleIdentifier raw "$APP/Info.plist")
           echo "Bundle ID: $BID"
+          echo "BID=$BID" >> "$GITHUB_ENV"
 
           UDID=$(xcrun simctl list devices available | grep -m1 "iPhone" | grep -Eo "[0-9A-Fa-f-]{36}")
           test -n "$UDID" || { echo '::error::no iPhone simulator found'; exit 1; }
           echo "Simulator UDID: $UDID"
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
 
           xcrun simctl boot "$UDID" 2>/dev/null || true
           xcrun simctl bootstatus "$UDID" -b
@@ -39,20 +72,53 @@ jobs:
           LAUNCH_OUT=$(xcrun simctl launch "$UDID" "$BID")
           echo "launch: $LAUNCH_OUT"
 
-          sleep 20
+          sleep 15
           mkdir -p shots
-          xcrun simctl io "$UDID" screenshot shots/boot-20s.png
-          sleep 10
-          xcrun simctl io "$UDID" screenshot shots/boot-30s.png
+          xcrun simctl io "$UDID" screenshot shots/1-first-run-server-setup.png
+          echo "📸 Phase A screenshot taken (expect: guided server setup wizard)"
+
+      - name: Phase A — verify app ↔ server socket connectivity
+        run: |
+          # The Library tab sits behind the setup wizard and fires GraphQL
+          # at http://127.0.0.1:4567 — a live TCP connection proves the
+          # client reached the external server.
+          sleep 3
+          CONN=$(lsof -nP -iTCP:4567 -sTCP:ESTABLISHED 2>/dev/null | grep -cv '^COMMAND' || true)
+          echo "established connections to Suwayomi: $CONN"
+          echo "conn=$CONN" >> "$GITHUB_ENV"
+          if [ "$CONN" -ge 1 ]; then
+            echo "✅ app ↔ external server TCP connection CONFIRMED"
+          else
+            echo "::warning::no ESTABLISHED conn at sampling moment (may be idle keep-alive) — screenshots will confirm"
+          fi
+          lsof -nP -iTCP:4567 2>/dev/null | head -20 || true
+
+      - name: Phase B — mark setup done → relaunch → library loads from server
+        run: |
+          xcrun simctl terminate "$UDID" "$BID" 2>/dev/null || true
+          sleep 2
+          # shared_preferences on iOS stores keys as "flutter.<key>"
+          xcrun simctl spawn "$UDID" defaults write "$BID" flutter.zeus_server_setup_done -bool YES
+          xcrun simctl launch "$UDID" "$BID"
+          sleep 20
+          xcrun simctl io "$UDID" screenshot shots/2-library-connected.png
+          echo "📸 Phase B screenshot taken (expect: Library connected to server)"
 
           if xcrun simctl spawn "$UDID" launchctl list | grep -qi "zeusmanhwa"; then
-            echo "✅ Zeus client process ALIVE after 30s — simulator boot verified"
+            echo "✅ Zeus client process ALIVE after relaunch"
           else
-            echo "::warning::process not in launchctl after 30s — crash logs below"
+            echo "::error::process not in launchctl after relaunch"
             ls ~/Library/Logs/DiagnosticReports 2>/dev/null | head -5 || true
             exit 1
           fi
           ls -la shots
+
+      - name: Server request evidence
+        if: always()
+        run: |
+          echo "--- Suwayomi server log (tail) ---"
+          tail -40 /tmp/suy.log 2>/dev/null || true
+
       - uses: actions/upload-artifact@v4
         with:
           name: ios-sim-boot-shots

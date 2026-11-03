@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../routes/router_config.dart';
 import '../../../../utils/extensions/custom_extensions.dart';
+import '../storage/storage_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -54,6 +55,14 @@ class SettingsScreen extends StatelessWidget {
             title: Text(context.l10n.backup),
             leading: const Icon(Icons.settings_backup_restore_rounded),
             onTap: () => const BackupRoute().go(context),
+          ),
+          ListTile(
+            title: Text(context.l10n.storageManagement),
+            subtitle: Text(context.l10n.storageManagementSubtitle),
+            leading: const Icon(Icons.storage_rounded),
+            onTap: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (_) => const StorageScreen()),
+            ),
           ),
           ListTile(
             title: Text(context.l10n.server),
